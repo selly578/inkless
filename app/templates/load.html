@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+    Load session
+{% endblock title %}
+{% block content %}
+  <div class="container mt-5 px-5">
+    <div class="row justify-content-center my-5">
+        <div class="col-12 col-lg-6 mb-3">
+            <div class="card">
+                <main class="card-body">
+                    <form action="" method="post">
+                        <div class="form-group mb-3">
+                            <input min="22" max="22" type="password" name="code" class="form-control {% if error %} is-invalid {% endif %}" placeholder="your sesion code" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback">
+                            {% if error %}
+                                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                    {{error}}                            
+                                </div>
+                            {% endif %}
+                        </div>
+                    
+                        <small class="form-help">Make sure the session you load into already has posts or nickname</small>
+                        <button class="btn btn-primary">Load session</button>
+                    </form>                 
+                </main>
+            </div>
+        </div>    
+    </div>
+  </div>
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}
+    {{session["identity"]|getnickname}} profile
+{% endblock title %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="card mb-5">
+            <div class="card-header">
+                <h5>
+                    Your session code is: `{{session["identity"]}}`
+                    <br>
+                    please remember and keep it secure so you can load your session in other devices 
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <input type="text" name="nickname" class="form-control my-3" placeholder="Your nickanme" value="{{session['identity']|getnickname}}">
+                    <button class="btn btn-primary">Change nickname</button>
+                </form>
+            </div>
+        </div>
+        <h3>Your posts</h3>
+        {% include "components/cards.html" %}
+    </div>
+{% endblock content %}

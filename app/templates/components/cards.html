@@ -1,0 +1,24 @@
+<div class="row justify-content-center my-5">
+    {% for post in posts %}
+        <div class="col-12 col-lg-6 mb-3">
+            <div class="card">
+                <header class="card-header pb-0">
+                    {% if post.author == session["identity"] %}
+                    <p>By myself</p>                    
+                    {% else %}
+                    <p>{{post.author|getnickname}}({{post.author[5:]}})</p>
+                    {% endif %}
+                </header>
+                <main class="card-body">
+                    <p class="card-text"> {{post.content}} </p>
+                </main>
+                <footer class="card-footer">
+                    <p>on {{post.date_created.strftime("%a %d/%m/%Y, %H:%M")}} </p>
+                </footer>
+            </div>
+        </div>
+        <br>
+    {% else %}
+        <h1 class="text-center">No post here...</h1>
+    {% endfor %}
+</div>
