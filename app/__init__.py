@@ -13,16 +13,16 @@ migrate = Migrate()
 _session = Session()
 
 def create_app():
-    app.config["SECRET_KEY"] = getenv("SESSION_COOKIE_NAME")
+    app.config["SECRET_KEY"] = getenv("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dbase.db"
-    app.config["SESSION_COOKIE_NAME"] = getenv("SESSION_COOKIE_NAME")
+    app.config["SESSION_COOKIE_NAME"] = "unique"
     app.config['SESSION_TYPE'] = "filesystem"
     app.config['SESSION_PERMANENT'] = False
 
     db.init_app(app)
     migrate.init_app(app,db)
     _session.init_app(app)
-    
+
 
     from .controllers.post import post
     from .controllers.user import user
