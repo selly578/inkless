@@ -16,7 +16,7 @@ def create_app():
     app.config["SECRET_KEY"] = getenv("SESSION_COOKIE_NAME")
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dbase.db"
     app.config["SESSION_COOKIE_NAME"] = getenv("SESSION_COOKIE_NAME")
-    app.config['SESSION_TYPE'] = getenv("SESSION_TYPE")
+    app.config['SESSION_TYPE'] = "filesystem"
     app.config['SESSION_PERMANENT'] = False
 
     db.init_app(app)
