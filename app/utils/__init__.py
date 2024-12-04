@@ -13,7 +13,7 @@ def get_nickname(identity: str):
 def generate_session():
     faker = Faker()
     if not session.get("identity"):
-        session["identity"] = uuid(name="key")
+        session["identity"] = uuid()
         session["nickname"] = User.query.filter_by(code=session["identity"] ).first() or f"{faker.user_name()}-{randint(0,9999)}"        
 
 
