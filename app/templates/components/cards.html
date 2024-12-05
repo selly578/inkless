@@ -12,6 +12,7 @@
                 </header>
                 <main class="card-body mb-5">
                     <p class="card-text"> {{post.content}} </p>
+                    {{post.liked_user()}}
                 </main>
                 <footer class="card-footer" x-data="{
                     like: '{{session['identity'] in post.liked_user()}}' == 'True',
