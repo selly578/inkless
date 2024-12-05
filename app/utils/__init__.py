@@ -7,7 +7,7 @@ from .. import app
 
 @app.template_filter("getnickname")
 def get_nickname(identity: str):
-    return User.query.filter_by(code=identity).first() or session["nickname"] or "Anonymous"
+    return User.query.filter_by(code=identity).first() or "Anonymous"
 
 @app.before_request
 def generate_session():
@@ -15,7 +15,7 @@ def generate_session():
     if not session.get("identity"):
         session["identity"] = uuid()
         session["nickname"] = User.query.filter_by(code=session["identity"] ).first() or f"{faker.user_name()}-{randint(0,9999)}"        
-
+        session.permanent = True
 
     session["ip"] = request.remote_addr
     print(session)
