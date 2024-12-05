@@ -39,4 +39,22 @@ def create_app():
     def index():
         return render_template("index.html")
 
+    @app.route("/about")
+    def about():
+        file = open("app/docs/about.md","r").read()
+        about = markdown(file)
+        return render_template("about.html",about=about)
+
+    @app.route("/policy")
+    def policy():
+        file = open("app/docs/policy.md","r").read()
+        policy = markdown(file)
+        return render_template("policy.html",policy=policy)
+    
+    @app.route("/tos")
+    def tos():
+        file = open("app/docs/tos.md","r").read()
+        tos = markdown(file)
+        return render_template("tos.html",tos=tos)
+
     return app
