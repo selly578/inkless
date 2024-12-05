@@ -1,5 +1,5 @@
-from flask import Blueprint,render_template,request,redirect,url_for,session
-from ..models.post import Post
+from flask import Blueprint,render_template,request,redirect,url_for,session,jsonify
+from ..models.post import Post,Reaction
 from .. import db  
 
 post = Blueprint("post",__name__)
@@ -25,3 +25,17 @@ def procesPostnForm():
     return redirect(url_for("post.index"))
 
 
+@post.post("/like/<int:id>")
+def like(id):
+    like = Reaction.query.filter_by(post_id=id,user_id=session["identity"]).first()
+
+    if like:
+        db.session.delete(like)
+        db.session.commit()
+        return jsonify(msg="unlike post")
+    
+    like = Reaction(post_id=id,user_id=session["identity"])
+    db.session.add(like)
+    db.session.commit()
+
+    return jsonify(msg="like post")

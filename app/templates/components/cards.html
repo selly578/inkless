@@ -4,16 +4,31 @@
             <div class="card">
                 <header class="card-header pb-0">
                     {% if post.author == session["identity"] %}
-                    <p>By myself</p>                    
+                    <span>By myself</span>                    
                     {% else %}
-                    <p>{{post.author|getnickname}}({{post.author[5:]}})</p>
+                    <span>{{post.author|getnickname}}({{post.author[:3]}})</span>
                     {% endif %}
+                    <span>on {{post.date_created.strftime("%a %d/%m/%Y, %H:%M")}} </span>
                 </header>
-                <main class="card-body">
+                <main class="card-body mb-5">
                     <p class="card-text"> {{post.content}} </p>
                 </main>
-                <footer class="card-footer">
-                    <p>on {{post.date_created.strftime("%a %d/%m/%Y, %H:%M")}} </p>
+                <footer class="card-footer" x-data="{
+                    like: false,
+                    likeCount: 0,
+                    likepost(){
+                        if(this.like){
+                            this.likeCount += 1;
+                            console.log('like post');
+                            fetch('/p/like/{{post.id}}',{method: 'post'})
+                        }else{
+                            this.likeCount -= 1;
+                            console.log('unlike post');
+                            fetch('/p/like/{{post.id}}',{method: 'post'})
+                        }
+                    }
+                }">
+                    <button class="btn" x-bind:class="like?'btn-primary':'btn-secondary'" x-on:click="like = !like;likepost();"><i class="fa-solid fa-thumbs-up" style="font-size: 15pt;"></i> <span x-text="likeCount"></span> </button>
                 </footer>
             </div>
         </div>
