@@ -14,8 +14,8 @@
                     <p class="card-text"> {{post.content}} </p>
                 </main>
                 <footer class="card-footer" x-data="{
-                    like: false,
-                    likeCount: 0,
+                    like: '{{session['identity'] in post.liked_user()}}' == 'True',
+                    likeCount: {{post.like_count()}},
                     likepost(){
                         if(this.like){
                             this.likeCount += 1;
