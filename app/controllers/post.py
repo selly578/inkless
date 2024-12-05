@@ -6,7 +6,7 @@ post = Blueprint("post",__name__)
 
 @post.get("/")
 def index():
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.date_created.desc()).all()
     return render_template("posts.html",title="Posts",posts=posts)
 
 @post.get("/create")
