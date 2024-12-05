@@ -17,7 +17,7 @@
                     like: '{{session['identity'] in post.liked_user()}}' == 'True',
                     likeCount: {{post.like_count()}},
                     likepost(){
-                        if(!this.like){
+                        if(this.like){
                             this.likeCount += 1;
                             console.log('like post');
                             fetch('/p/like/{{post.id}}',{method: 'post'})
