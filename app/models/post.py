@@ -11,13 +11,16 @@ class Post(db.Model):
     
     replies = db.relationship("Post", backref=db.backref("parent", remote_side=[id]), cascade="all, delete-orphan")
 
-    def like_count(self):
-        print(Reaction.query.filter_by(post_id=self.id).count())
+    def reply_count(self):
+        return Post.query.filter_by(parent_id=self.id).count()
+
+    def like_count(self):       
         return Reaction.query.filter_by(post_id=self.id).count()
 
     def liked_user(self):
         likes = Reaction.query.filter_by(post_id=self.id).all()
         return [like.user_id for like in likes]
+        
 
 class Reaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
