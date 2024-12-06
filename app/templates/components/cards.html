@@ -1,39 +1,10 @@
-<div class="row justify-content-center my-5">
+<div class="row justify-content-center my-5" x-data>
     {% for post in posts %}
         <div class="col-12 col-lg-6 mb-3">
-            <div class="card">
-                <header class="card-header pb-0">
-                    {% if post.author == session["identity"] %}
-                    <span>By myself</span>                    
-                    {% else %}
-                    <span>{{post.author|getnickname}}({{post.author[:3]}})</span>
-                    {% endif %}
-                    <span>on {{post.date_created.strftime("%a %d/%m/%Y, %H:%M")}} </span>
-                </header>
-                <main class="card-body mb-5">
-                    <p class="card-text"> {{post.content}} </p>
-                </main>
-                <footer class="card-footer" x-data="{
-                    like: '{{session['identity'] in post.liked_user()}}' == 'True',
-                    likeCount: {{post.like_count()}},
-                    likepost(){
-                        if(this.like){
-                            this.likeCount += 1;
-                            console.log('like post');
-                            fetch('/p/like/{{post.id}}',{method: 'post'})
-                        }else{
-                            this.likeCount -= 1;
-                            console.log('unlike post');
-                            fetch('/p/like/{{post.id}}',{method: 'post'})
-                        }
-                    }
-                }">
-                    <button class="btn" x-bind:class="like?'btn-primary':'btn-secondary'" x-on:click="like = !like;likepost();"><i class="fa-solid fa-thumbs-up" style="font-size: 15pt;"></i> <span x-text="likeCount"></span> </button>
-                </footer>
-            </div>
+            {% include "components/card.html" %}
         </div>
         <br>
     {% else %}
-        <h1 class="text-center">No post here...</h1>
+        <h1 class="text-center" x-text="'{{reply}}'?'No reply yet':'No post here...'"></h1>
     {% endfor %}
 </div>
