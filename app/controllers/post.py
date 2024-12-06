@@ -18,7 +18,7 @@ def _post(id):
 
 @post.get("/create")
 def PostForm():
-    return render_template("create.html")
+    return render_template("create.html",reply=False)
 
 @post.post("/create")
 def procesPostnForm():
@@ -34,7 +34,7 @@ def procesPostnForm():
 @post.get("/reply/<int:id>")
 def reply(id):
     post = Post.query.get_or_404(id) 
-    return render_template("create.html",post=post,reply="true")
+    return render_template("create.html",post=post,reply=True)
 
 @post.post("/reply/<int:id>")
 def save_reply(id):
