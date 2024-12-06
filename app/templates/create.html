@@ -13,7 +13,7 @@
     {% endif %}
     <form method="post">
       <div class="form-group mb-3" x-data>      
-       <textarea name="content" maxlength="200" required cols="30" rows="10" class="form-control" x-bind:placeholder="!{{reply}}?'Share your toughts...':'Your reply...'"></textarea>
+       <textarea name="content" maxlength="200" required cols="30" rows="10" class="form-control" x-bind:placeholder="'{{reply}}' != 'True'?'Share your toughts...':'Your reply...'"></textarea>
       </div>
       <button class="btn btn-primary">Post</button>
     </form>
