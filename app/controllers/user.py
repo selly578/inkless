@@ -37,4 +37,4 @@ def load_access_process():
         session["nickname"] = user_exist.nickname
         return redirect(url_for("post.index"))
 
-    return render_template("load.html",error="Code not exist or not saved")
+    return render_template("load.html",error="Identity not exist or not saved")
