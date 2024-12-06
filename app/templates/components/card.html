@@ -1,0 +1,42 @@
+<div class="card mb-3">
+    <header class="card-header pb-0">
+        {% if post.author == session["identity"] %}
+        <span>By myself</span>                    
+        {% else %}
+        <span>{{post.author|getnickname}}({{post.author[:3]}})</span>
+        {% endif %}
+        <span>on {{post.date_created.strftime("%a %d/%m/%Y, %H:%M")}} </span>
+        {% if post.parent %}
+            <span>replying to <a href="{{url_for('post._post',id=post.parent.id)}}">{{post.parent.author|getnickname}}({{post.parent.author[:3]}})</a> </span>
+        {% endif %}
+    </header>
+    <main class="card-body mb-2">
+        {% if not single_post %}
+            <a href="{{url_for('post._post',id=post.id)}}" class="text-decoration-none text-black">
+                <p class="card-text"> {{post.content}} </p>
+            </a>
+        {% else %}
+            <p class="card-text"> {{post.content}} </p>
+        {% endif %}
+    </main>
+    {% if not reply %}
+        <footer class="card-footer" x-data="{
+            like: '{{session['identity'] in post.liked_user()}}' == 'True',
+            likeCount: {{post.like_count()}},
+            likepost(){
+                if(this.like){
+                    this.likeCount += 1;
+                    console.log('like post');
+                    fetch('/p/like/{{post.id}}',{method: 'post'})
+                }else{
+                    this.likeCount -= 1;
+                    console.log('unlike post');
+                    fetch('/p/like/{{post.id}}',{method: 'post'})
+                }
+            }
+        }"> 
+            <button class="btn" x-bind:class="like?'btn-primary':'btn-secondary'" x-on:click="like = !like;likepost();"><i class="fa-solid fa-thumbs-up" style="font-size: 15pt;"></i> <span x-text="likeCount"></span> </button>
+            <a href="{{url_for('post.reply',id=post.id)}}" class="btn btn-info"><i class="fa-regular fa-comment me-1" style="font-size: 15pt;"></i>0</a>
+        </footer>
+    {% endif %}
+</div>

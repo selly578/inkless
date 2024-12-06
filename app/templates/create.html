@@ -1,9 +1,19 @@
 {% extends "base.html" %}
+{% block title %}
+  {% if reply %}
+    Reply to {{post.author|getnickname}}({{post.author[:3]}})'s post
+  {% else %}
+    Create post
+  {% endif %}
+{% endblock title %}
 {% block content %}
   <div class="container my-5">
+    {% if post %}
+      {% include "components/card.html" %}
+    {% endif %}
     <form method="post">
-      <div class="form-group mb-3">      
-       <textarea name="content" maxlength="200" id="" cols="30" rows="10" class="form-control" placeholder="Share your toughts..."></textarea>
+      <div class="form-group mb-3" x-data>      
+       <textarea name="content" maxlength="200" id="" cols="30" rows="10" class="form-control" x-bind:placeholder="!{{reply}}?'Share your toughts...':'Your reply...'"></textarea>
       </div>
       <button class="btn btn-primary">Post</button>
     </form>

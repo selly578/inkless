@@ -9,9 +9,16 @@ def index():
     posts = Post.query.order_by(Post.date_created.desc()).all()
     return render_template("posts.html",title="Posts",posts=posts)
 
+@post.get("/<int:id>")
+def _post(id):
+    post = Post.query.get_or_404(id) 
+    children = Post.query.filter_by(parent_id=post.id).all()
+    
+    return render_template("post.html",post=post,children=children,reply=False)
+
 @post.get("/create")
 def PostForm():
-    return render_template("create.html",title="Create post")
+    return render_template("create.html")
 
 @post.post("/create")
 def procesPostnForm():
@@ -24,6 +31,22 @@ def procesPostnForm():
 
     return redirect(url_for("post.index"))
 
+@post.get("/reply/<int:id>")
+def reply(id):
+    post = Post.query.get_or_404(id) 
+    return render_template("create.html",post=post,reply="true")
+
+@post.post("/reply/<int:id>")
+def save_reply(id):
+    content = request.form.get("content")
+    author = session["identity"]
+
+    post = Post.query.get_or_404(id) 
+    reply = Post(content=content,author=author,parent=post)
+    db.session.add(reply)
+    db.session.commit()
+
+    return redirect(url_for("post.index"))
 
 @post.post("/like/<int:id>")
 def like(id):
