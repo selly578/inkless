@@ -14,7 +14,7 @@ def _post(id):
     post = Post.query.get_or_404(id) 
     children = Post.query.filter_by(parent_id=post.id).all()
     
-    return render_template("post.html",post=post,children=children,reply=False)
+    return render_template("post.html",post=post,children=children,reply=False,single_post=True)
 
 @post.get("/create")
 def PostForm():
@@ -48,6 +48,7 @@ def save_reply(id):
 
     return redirect(url_for("post.index"))
 
+# api
 @post.post("/like/<int:id>")
 def like(id):
     like = Reaction.query.filter_by(post_id=id,user_id=session["identity"]).first()
@@ -62,3 +63,34 @@ def like(id):
     db.session.commit()
 
     return jsonify(msg="like post")
+
+@post.get("/posts")
+def _posts():
+    posts = Post.query.all()
+    __posts = []
+    for post in posts:
+        _ = {
+            "id": post.id,
+            "author": post.author,
+            "date_created": post.date_created,
+            "parent_id": post.parent.id if post.parent else None,
+            "content": post.content
+        }
+        __posts.append(_)
+
+    return jsonify(posts=__posts)
+
+@post.post("/compose")
+def create_post():
+    content = request.get_json()["content"]
+    author = request.cookies.get("identity")
+    parent_id = request.args.get("parent")
+
+    parent = Post.query.filter_by(parent=parent_id).first()
+    print(parent)
+    post = Post(content=content,author=author)
+    db.session.add(post)
+    db.session.commit()
+
+    return jsonify(msg="post created")
+

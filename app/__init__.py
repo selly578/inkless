@@ -39,7 +39,7 @@ def create_app():
     from .controllers.post import post
     from .controllers.user import user
 
-    app.register_blueprint(post,url_prefix="/p")
+    app.register_blueprint(post)
     app.register_blueprint(user,url_prefix="/u")
 
     from .models.post import Post
@@ -47,7 +47,7 @@ def create_app():
 
     from .utils import get_nickname,generate_session
 
-    @app.route("/")
+    @app.route("/landigpage")
     def index():
         return render_template("index.html")
 
