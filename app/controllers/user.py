@@ -40,22 +40,15 @@ def load_access_process():
 
     return render_template("load.html",error="Identity not exist or not saved")
 
-@user.get("/profile")
+@user.get("/profile/create")
 def _profile():
+    id = uuid()
+    response = make_response(jsonify(msg="create_identity",id=id,nickname="Anonymous"))
+    response.set_cookie("identity",id,domain='.localhost.local')
+    response.set_cookie("nickname","Anonymous",domain='.localhost.local')
     
-    if not request.cookies.get("identity"):
-        id = uuid()
-        response = make_response(jsonify(msg="create_identity",id=id,nickname="Anonymous"))
-        response.set_cookie("identity",id)
-        response.set_cookie("nickname","Anonymous")
-        
-        return response
- 
-    _ = {
-        "id": request.cookies.get("identity"),
-        "nickname": request.cookies.get("nickname")
-    }
-    return jsonify(_)
+    return response
+
 
 
 @user.post("/profile/load")
@@ -74,21 +67,28 @@ def load_profile():
         response.set_cookie("nickname","Anonymous")
 
         return response 
-    return jsonify(msg="code not found!"),404
+    return jsonify(msg="identity code not found!"),404
 
 @user.post("/profile/edit")
 def edit_profile(): 
+    id = uuid()
     try:
         nickname = request.get_json()["nickname"]   
     except KeyError:
         return jsonify(msg="field identity missing"),400  
      
-    user = User.query.filter_by(code=request.cookies.get("identity")).first()
-    response = make_response(jsonify(msg="sucessfully edit nickname"))
+    user = User.query.filter_by(code=request.headers.get("user_id")).first()
     if user:
         user.nickname = nickname 
+        db.session.commit()
+    else:
+        user = User(code=request.headers.get("user_id"),nickname=nickname)
+        db.session.add(user)
+        db.session.commit()
+    
+    response = make_response(jsonify(msg="sucessfully edit nickname",id=request.headers.get("user_id"),nickname=nickname))
     response.set_cookie("nickname",nickname)
-    db.session.commit()
     
     return response
+        
 

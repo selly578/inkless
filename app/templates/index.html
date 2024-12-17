@@ -1,47 +1,73 @@
 {% extends "base.html" %}
 {% block title %} Inkless - A place to share your voice without a trace. {% endblock title %}
 {% block content %}
-<div class="container-fluid bg-info text-white text-center py-5">
-  <div class="container">
-      <h1 class="display-4 fw-bold">Post Your Thoughts, Anonymously</h1>
-      <p class="lead mt-3 text-white">No accounts. No hassle. Share your voice with the world.</p>
-      <a href="{{url_for('post.PostForm')}}" class="btn btn-light btn-lg mt-4">
-          <i class="fas fa-pen"></i> Start Posting
-      </a>
-  </div>
+<div class="mx-0 bg-gradient-to-br from-purple-600 to-purple-950 text-gray-200 text-center py-5 h-96">
+    <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex-1">
+            <h1 class="text-5xl lg:text-6xl">Post Your Thoughts, Anonymously</h1>
+            <a href="{{url_for('post.PostForm')}}" class="no-underline text-white bg-blue-500 bg-opacity-80 hover:bg-blue-500  p-3 rounded-md  ">
+                <i class="fas fa-pen"></i> Start Posting
+            </a>
+        </div>
+        <div class="flex-1 bg-green-500 p-4 ">Column 2</div>
+      </div>
 </div>
-<section class="container py-5 text-center">
-  <h2 class="fw-bold mb-4">How It Works</h2>
-  <p class="text-muted mb-5">Posting your thoughts anonymously has never been easier!</p>
-  <div class="row g-4">
-      <div class="col-md-4">
-          <div class="p-4 border rounded">
-              <i class="fas fa-edit fa-3x text-primary mb-3"></i>
-              <h5 class="fw-bold">1. Write Your Post</h5>
-              <p class="text-muted">Type your thoughts, secrets, or stories into the simple text box.</p>
-          </div>
-      </div>
-      <div class="col-md-4">
-          <div class="p-4 border rounded">
-              <i class="fas fa-paper-plane fa-3x text-success mb-3"></i>
-              <h5 class="fw-bold">2. Submit</h5>
-              <p class="text-muted">Submit your post instantly without creating an account.</p>
-          </div>
-      </div>
-      <div class="col-md-4">
-          <div class="p-4 border rounded">
-              <i class="fas fa-globe fa-3x text-info mb-3"></i>
-              <h5 class="fw-bold">3. Share with the World</h5>
-              <p class="text-muted">Your post will appear on the feed for everyone to see.</p>
-          </div>
-      </div>
+<section class="py-5 text-center bg-purple-100">
+    <h1 class="text-6xl text-gray-500">
+        No accounts. No hassle. Share your voice with the world.
+    </h1>
+</section>
+<section class="py-5 px-6 text-center">
+  <h2 class="text-5xl text-gray-800">How It Works</h2>
+  <p>
+      <em class="text-muted mb-5">Posting your thoughts anonymously has never been easier!</em>
+  </p>
+  <br>
+  <br>
+  <div class="flex flex-col md:flex-row gap-4 px-5">
+    <div class="flex-1 ">
+        
+    </div>
+    <div class="flex-1 text-left bg-purple-400 bg-opacity-70 text-purple-800 p-5 mb-5 rounded-xl cursor-pointer" data-aos="fade-up">
+        <i class="fas fa-edit fa-5x"></i>
+        <h5 class="text-2xl mb-0">Write Your Post</h5>
+        <p class="text-xl">Type your thoughts, secrets, or stories into the simple text box.</p>
+    </div>
+  </div>
+  <div class="flex flex-col md:flex-row gap-4 px-5">
+    <div class="flex-1 text-left bg-blue-400 bg-opacity-50 text-blue-700 p-5 mb-5 rounded-xl  cursor-pointer" data-aos="fade-up">
+        <i class="fas fa-paper-plane fa-5x"></i>
+        <h5 class="text-2xl mb-0">Submit</h5>
+        <p class="text-xl">Submit your post instantly without creating an account.</p>
+    </div>
+    <div class="flex-1 ">
+        
+    </div>
+  </div>
+  <div class="flex flex-col md:flex-row gap-4 px-5">
+    <div class="flex-1 ">
+        
+    </div>
+    <div class="flex-1 text-left bg-green-400 bg-opacity-70 text-green-950 p-5 mb-5 rounded-xl cursor-pointer" data-aos="fade-up">
+        <i class="fas fa-globe fa-5x"></i>
+        <h5 class="text-2xl mb-0">Share with the World</h5>
+        <p class="text-xl">Your post will appear on the feed for everyone to see.</p>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <p class="mt-11 text-lg">You don't need anything, just post it right away!</p>
+  <div class="text-center mb-5">
+    <a href="" class="no-underline bg-violet-600 text-white hover:bg-violet-500 p-3 rounded-md">See other's posts</a>
   </div>
 </section>
-<section class="bg-primary text-white text-center py-5">
-    <div class="container">
+<section class="bg-purple-500 text-white text-center py-5">
+    <div class="container my-10">
         <h2 class="fw-bold mb-3">Ready to Share Your Voice?</h2>
-        <p class="lead mb-4 text-white">Post your thoughts anonymously and join the conversation today.</p>
-        <a href="{{url_for('post.PostForm')}}" class="btn btn-light btn-lg">
+        <p class="lead mb-10 text-white">Post your thoughts anonymously and join the conversation today.</p>
+        <a href="{{url_for('post.PostForm')}}" class="no-underline bg-rose-400 text-white hover:bg-rose-300 p-3 rounded-md">
             <i class="fas fa-pen"></i> Start Posting Now!
         </a>
     </div>

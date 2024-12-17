@@ -1,9 +1,6 @@
-<div class="row justify-content-center my-5" x-data>
+<div x-data>
     {% for post in posts %}
-        <div class="col-12 col-lg-6 mb-3">
-            {% include "components/card.html" %}
-        </div>
-        <br>
+        {% include "components/card.html" %}
     {% else %}
         <h1 class="text-center" x-text="'{{reply}}'?'No reply yet':'No post here...'"></h1>
     {% endfor %}

@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="container mt-5 px-5" style="min-height: 100vh;">
+  <div class="px-5 mx-1 md:mx-80 mb-10" style="min-height: 100vh;">
+    <div class="border border-solid border-gray-300">
+      <div class="flex pt-16">
+        <a href="" class="px-1 pb-1 text-gray-500 no-underline font-semibold">Explore</a>
+        <a href="" class="px-1 pb-1 text-gray-500 no-underline font-semibold">Discover</a>
+      </div>
+    </div>
     {% include "components/cards.html" %}
+    {% include "components/createform.html"  %}
+    <a title="create a new post" class="btn-floating cursor-pointer" x-on:click="showform = true">
+      <i class="fas fa-pen"></i>
+    </a>
   </div>
 {% endblock content %}

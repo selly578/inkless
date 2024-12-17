@@ -1,0 +1,18 @@
+<nav class="flex items-center justify-between px-6 py-4 bg-gradient-to-tr from-purple-600 via-purple-700 to-purple-900 text-white">
+  <!-- Left Side: Logo and Navigation Links -->
+  <div class="flex items-center space-x-6">
+    <div class="text-xl font-semibold">
+      <a href="/" class="text-white no-underline">Inkless</a>
+    </div>
+    <!-- <div class="hidden md:flex space-x-6">      
+      <a href="#" class="hover:text-gray-400">Explore</a>
+    </div> -->
+  </div>
+  
+  <!-- Right Side: Profile -->
+  <div>
+    <a href="{{url_for('user.profile')}}" class="flex no-underline text-gray-200 hover:text-indigo-300 hover:underline">    
+      {{session["nickname"]}}
+    </a>
+  </div>
+</nav>

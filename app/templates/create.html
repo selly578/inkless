@@ -7,15 +7,17 @@
   {% endif %}
 {% endblock title %}
 {% block content %}
-  <div class="container my-5">
+  <div class="my-5" style="min-height: 70vh;">
     {% if post %}
       {% include "components/card.html" %}
     {% endif %}
-    <form method="post">
-      <div class="form-group mb-3" x-data>      
-       <textarea name="content" maxlength="200" required cols="30" rows="10" class="form-control" x-bind:placeholder="'{{reply}}' != 'True'?'Share your toughts...':'Your reply...'"></textarea>
-      </div>
-      <button class="btn btn-primary">Post</button>
-    </form>
+    <div class="flex items-center justify-center mt-16">
+      <form method="post" class="w-full md:w-1/2 lg:w-3/4 mx-5">
+        <div class="form-group mb-3" x-data>      
+         <textarea name="content" maxlength="200" required cols="30" rows="10" class="w-full" x-bind:placeholder="'{{reply}}' != 'True'?'Share your toughts...':'Your reply...'"></textarea>
+        </div>
+        <button class="no-underline bg-violet-600 text-white hover:bg-violet-500 p-3 rounded-md border-none cursor-pointer">Send to the world</button>
+      </form>
+    </div>
   </div>
 {% endblock content %}

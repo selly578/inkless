@@ -1,42 +1,39 @@
-<div class="card mb-3">
-    <header class="card-header pb-0">
-        {% if post.author == session["identity"] %}
-        <span>By myself</span>                    
-        {% else %}
-        <span>{{post.author|getnickname}}({{post.author[:3]}})</span>
-        {% endif %}
-        <span>on {{post.date_created.strftime("%a %d/%m/%Y, %H:%M")}} </span>
+<div class="border border-solid border-gray-300 p-4" x-data>
+    <header class="card-header pb-0 text-sm">
+        <span class="font-semibold text-gray-700">{{post.author|getnickname}}</span><span class="text-gray-500">({{post.author[:3]}})</span>
         {% if post.parent %}
             <span>replying to <a href="{{url_for('post._post',id=post.parent.id)}}">{{post.parent.author|getnickname}}({{post.parent.author[:3]}})</a> </span>
         {% endif %}
+        <span>· {{post.date_created|naturalday}} </span>
     </header>
     <main class="card-body mb-2">
         {% if not single_post %}
-            <a href="{{url_for('post._post',id=post.id)}}" class="text-decoration-none text-black">
-                <p class="card-text"> {{post.content}} </p>
+            <a href="{{url_for('post._post',id=post.id)}}" class=" text-gray-800 no-underline">
+                <p class=""> {{post.content}} </p>
             </a>
         {% else %}
-            <p class="card-text"> {{post.content}} </p>
+            <p class="text-gray-800 no-underline"> {{post.content}} </p>
         {% endif %}
     </main>
     {% if not reply %}
-        <footer class="card-footer" x-data="{
+        <footer class="space-x-4" x-data="{
             like: '{{session['identity'] in post.liked_user()}}' == 'True',
             likeCount: {{post.like_count()}},
             likepost(){
                 if(this.like){
                     this.likeCount += 1;
                     console.log('like post');
-                    fetch('/p/like/{{post.id}}',{method: 'post'})
+                    fetch('{{url_for('post.like',id=post.id)}}',{method: 'post'})
                 }else{
                     this.likeCount -= 1;
                     console.log('unlike post');
-                    fetch('/p/like/{{post.id}}',{method: 'post'})
+                    fetch('{{url_for('post.like',id=post.id)}}',{method: 'post'})
                 }
             }
         }"> 
-            <button class="btn" x-bind:class="like?'btn-primary':'btn-secondary'" x-on:click="like = !like;likepost();"><i class="fa-solid fa-thumbs-up" style="font-size: 15pt;"></i> <span x-text="likeCount"></span> </button>
-            <a href="{{url_for('post.reply',id=post.id)}}" class="btn btn-info"><i class="fa-regular fa-comment me-1" style="font-size: 15pt;"></i>{{post.reply_count()}}</a>
+            <span class="btn"><i class="fa-solid fa-thumbs-up cursor-pointer" x-on:click="like = !like;likepost();"  x-bind:class="like?'text-violet-700':'text-gray-500'" style="font-size: 15pt;"></i> <span x-text="likeCount" class="text-gray-500"></span> </span>
+            <span x-on:click="showform=true" class="no-underline cursor-pointer"><i class="fa-regular fa-comment text-gray-500 mr-2" style="font-size: 15pt;"></i><span class="text-gray-500">{{post.reply_count()}} </span></span>
         </footer>
-    {% endif %}
-</div>
+        {% endif %}
+    </div>
+    {% include "components/createform.html"  %}

@@ -2,6 +2,7 @@ from flask import Flask,render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_session import Session
+from flask_cors import CORS
 from sqlalchemy import MetaData
 from dotenv import load_dotenv
 from markdown import markdown
@@ -23,7 +24,7 @@ metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate()
 _session = Session()
-
+cors = CORS(app, support_credentials=True)
 def create_app():
     app.config["SECRET_KEY"] = getenv("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dbase.db"
@@ -36,11 +37,12 @@ def create_app():
     _session.init_app(app)
 
 
+
     from .controllers.post import post
     from .controllers.user import user
 
-    app.register_blueprint(post)
-    app.register_blueprint(user,url_prefix="/u")
+    app.register_blueprint(post,url_prefix="/posts")
+    app.register_blueprint(user)
 
     from .models.post import Post
     from .models.user import User
