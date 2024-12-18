@@ -1,4 +1,4 @@
-from flask import session,request
+from flask import session,request,jsonify
 from shortuuid import uuid
 from faker import Faker
 from humanize import naturalday,naturaltime
@@ -24,6 +24,14 @@ def generate_session():
 
     session["ip"] = request.remote_addr
     print(session)
+
+@app.errorhandler(404)
+def not_found_handler(e):
+    return jsonify(msg="data not found"),404 
+
+@app.errorhandler(429)
+def too_many_request_handler(e):
+    return jsonify(msg="please don't spam :)"),429
 
 def posts_to_json(posts,current_user):
     __posts = [] 
