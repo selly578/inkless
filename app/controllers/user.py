@@ -2,7 +2,7 @@ from flask import Blueprint,render_template,redirect,url_for,request,session,mak
 from shortuuid import uuid
 from ..models.user import User
 from ..models.post import Post,Reaction
-from .. import db
+from .. import db,limiter
 
 user = Blueprint("user",__name__)
 
@@ -41,6 +41,7 @@ def load_access_process():
     return render_template("load.html",error="Identity not exist or not saved")
 
 @user.get("/profile/create")
+@limiter.limit("1 per month")
 def _profile():
     id = uuid()
     response = make_response(jsonify(msg="create_identity",id=id,nickname="Anonymous"))
@@ -48,8 +49,6 @@ def _profile():
     response.set_cookie("nickname","Anonymous",domain='.localhost.local')
     
     return response
-
-
 
 @user.post("/profile/load")
 def load_profile():
