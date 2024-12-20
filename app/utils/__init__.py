@@ -49,6 +49,7 @@ def posts_to_json(posts,current_user):
             "content": post.content,
             "reply_count": post.reply_count(),
             "like_count": post.like_count(),
+            "quote_count": post.quote_count(),
             "user_like_this": current_user in post.liked_user()
         }
         __posts.append(_)

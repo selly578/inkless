@@ -23,6 +23,9 @@ class Post(db.Model):
     def liked_user(self):
         likes = Reaction.query.filter_by(post_id=self.id).all()
         return [like.user_id for like in likes]
+    
+    def qoute_count(self):
+        return Post.query.filter_by(quoted_post_id=self.id).count()
         
 
 class Reaction(db.Model):

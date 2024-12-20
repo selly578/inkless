@@ -63,6 +63,7 @@ def _post(id):
         "content": post.content,
         "reply_count": post.reply_count(),
         "like_count": post.like_count(),
+        "qoute_count": post.qoute_count(),
         "user_like_this": user_id in post.liked_user()
     }
 
