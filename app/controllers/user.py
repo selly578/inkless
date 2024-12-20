@@ -1,5 +1,7 @@
 from flask import Blueprint,render_template,redirect,url_for,request,session,make_response,jsonify
 from shortuuid import uuid
+from faker import Faker
+from random import randint
 from ..models.user import User
 from ..models.post import Post,Reaction
 from .. import db,limiter
@@ -10,7 +12,8 @@ user = Blueprint("user",__name__)
 @limiter.limit("1 per month")
 def _profile():
     id = uuid()
-    response = make_response(jsonify(msg="create_identity",id=id,nickname="Anonymous"))
+    faker = Faker()
+    response = make_response(jsonify(msg="create_identity",id=id,nickname=f"{faker.user_name()}-{randint(0,9999)}"))
     response.set_cookie("identity",id,domain='.localhost.local')
     response.set_cookie("nickname","Anonymous",domain='.localhost.local')
     
