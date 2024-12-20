@@ -26,9 +26,23 @@ def like(id):
 @post.get("/")
 def _posts():
     user_id = request.headers.get("user_id")
-    posts = Post.query.order_by(Post.date_created.desc()).all()
+    sort_by = request.args.get("sort","latest")
+    posts = Post.query.all()
 
     __posts = posts_to_json(posts,user_id)
+
+    if sort_by.lower() == "latest":
+       __posts = sorted(__posts, key=lambda d: d["date_created"],reverse=True)
+
+    if sort_by.lower() == "oldest":
+       __posts = sorted(__posts, key=lambda d: d["date_created"])
+    
+    if sort_by.lower() == "most_likes":
+       __posts = sorted(__posts, key=lambda d: d["like_count"],reverse=True)
+
+    if sort_by.lower() == "least_likes":
+       __posts = sorted(__posts, key=lambda d: d["date_created"])
+
 
     return jsonify(__posts)
 
