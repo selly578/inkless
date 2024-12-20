@@ -26,23 +26,9 @@ def like(id):
 @post.get("/")
 def _posts():
     user_id = request.headers.get("user_id")
-    sort_by = request.args.get("sort","latest")
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.date_created.desc()).all()
 
     __posts = posts_to_json(posts,user_id)
-
-    if sort_by.lower() == "latest":
-       __posts = sorted(__posts, key=lambda d: d["date_created"],reverse=True)
-
-    if sort_by.lower() == "oldest":
-       __posts = sorted(__posts, key=lambda d: d["date_created"])
-    
-    if sort_by.lower() == "most_likes":
-       __posts = sorted(__posts, key=lambda d: d["like_count"],reverse=True)
-
-    if sort_by.lower() == "least_likes":
-       __posts = sorted(__posts, key=lambda d: d["date_created"])
-
 
     return jsonify(__posts)
 
@@ -84,10 +70,11 @@ def create_post():
     content = request.get_json()["content"]
     author = request.headers.get("user_id")
     parent_id = request.get_json().get("parent")
+    quoted_id = request.get_json().get("quoted")
 
     parent = Post.query.filter_by(id=parent_id).first()
-    print(parent)
-    post = Post(content=content,author=author,parent=parent)
+    quoted = Post.query.filter_by(id=quoted_id).first()
+    post = Post(content=content,author=author,parent=parent,quoted=quoted)
     db.session.add(post)
     db.session.commit()
 
