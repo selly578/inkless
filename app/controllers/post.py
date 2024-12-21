@@ -60,10 +60,11 @@ def _post(id):
         },
         "date_created": post.date_created,
         "parent_id": post.parent.id if post.parent else None,
+        "quoted_post": post.quoted.id if post.quoted else None,
         "content": post.content,
         "reply_count": post.reply_count(),
         "like_count": post.like_count(),
-        "qoute_count": post.qoute_count(),
+        "quote_count": post.quote_count(),
         "user_like_this": user_id in post.liked_user()
     }
 

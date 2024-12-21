@@ -46,6 +46,7 @@ def posts_to_json(posts,current_user):
             },
             "date_created": post.date_created,
             "parent_id": post.parent.id if post.parent else None,
+            "quoted_post": post.quoted.id if post.quoted else None,
             "content": post.content,
             "reply_count": post.reply_count(),
             "like_count": post.like_count(),
