@@ -28,7 +28,7 @@ def load_profile():
         
     user_exist = User.query.filter_by(code=code).first()
     post_exist = Post.query.filter_by(author=code).first()
-    like = Reaction.query.filter_by(user_id=session["identity"]).all()
+    like = Reaction.query.filter_by(user_id=code).all()
     if user_exist or post_exist or like:
         response = make_response(jsonify(id=code,nickname=user_exist.nickname if user_exist else "Anonymous"))
         response.set_cookie("identity",code)
