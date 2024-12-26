@@ -27,7 +27,6 @@ metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate()
 cors = CORS(app, support_credentials=True)
-imgur = Imgur(app,client_id=getenv("IMGUR_SECRET"))
 limiter = Limiter(
     get_remote_address,
     app=app,

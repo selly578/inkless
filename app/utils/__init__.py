@@ -1,14 +1,14 @@
 from flask import session,request,jsonify
 from shortuuid import uuid
 from faker import Faker
-from humanize import naturalday,naturaltime
-from imgurpython import ImgurClient
+from humanize import naturaltime
+from os import getenv
 from random import randint
 from ..models.user import User
 from .. import app
 
-IMGUR_ID = "ce3c77177b4e01c"
-IMGUR_SECRET = "eb6275603083462c784095668ff4f1e6e5c223ba"
+IMGUR_ID = getenv("IMGUR_ID")
+IMGUR_SECRET = getenv("IMGUR_SECRET")
 
 @app.template_filter("getnickname")
 def get_nickname(identity: str):
@@ -20,13 +20,7 @@ def _naturalday(date):
 
 @app.before_request
 def generate_session():
-    faker = Faker()
-    if not session.get("identity"):
-        session["identity"] = uuid()
-        session["nickname"] = User.query.filter_by(code=session["identity"] ).first() or f"{faker.user_name()}-{randint(0,9999)}"        
-        session.permanent = True
-
-    session["ip"] = request.remote_addr
+    pass
 
 
 @app.errorhandler(404)
@@ -56,7 +50,7 @@ def posts_to_json(posts,current_user):
             "like_count": post.like_count(),
             "quote_count": post.quote_count(),
             "user_like_this": current_user in post.liked_user(),
-	    "image_url": post.image_url
+	        "image_url": post.image_url
         }
         __posts.append(_)
 

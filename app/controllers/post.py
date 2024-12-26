@@ -2,7 +2,7 @@ from flask import Blueprint,render_template,request,redirect,url_for,session,jso
 from ..models.post import Post,Reaction
 from ..models.user import User
 from ..utils import posts_to_json,upload_to_imgur
-from .. import db,imgur 
+from .. import db
 
 post = Blueprint("post",__name__)
 
