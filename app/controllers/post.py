@@ -66,7 +66,7 @@ def _post(id):
         "like_count": post.like_count(),
         "quote_count": post.quote_count(),
         "user_like_this": user_id in post.liked_user(),
-	"image_url": post.image_url
+	    "image_url": post.image_url
     }
 
     return jsonify(_)
