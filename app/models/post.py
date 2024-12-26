@@ -9,7 +9,7 @@ class Post(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow, nullable=False) 
     parent_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=True)
     quoted_post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=True)
-
+    image_url = db.Column(db.String(100))  
     replies = db.relationship("Post", backref=db.backref("parent", remote_side=[id]), 
                               cascade="all, delete-orphan", foreign_keys=[parent_id])
     quotes = db.relationship("Post", backref=db.backref("quoted", remote_side=[id]),

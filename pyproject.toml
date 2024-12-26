@@ -18,6 +18,8 @@ markdown = "^3.7"
 humanize = "^4.11.0"
 flask-cors = "^5.0.0"
 flask-limiter = "^3.9.2"
+imgurpython = "^1.1.7"
+flask-imgur = "^0.1"
 
 
 [build-system]

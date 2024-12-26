@@ -5,6 +5,7 @@ from flask_session import Session
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_imgur.flask_imgur import Imgur
 from sqlalchemy import MetaData
 from dotenv import load_dotenv
 from markdown import markdown
@@ -25,8 +26,8 @@ convention = {
 metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate()
-_session = Session()
 cors = CORS(app, support_credentials=True)
+imgur = Imgur(app,client_id=getenv("IMGUR_SECRET"))
 limiter = Limiter(
     get_remote_address,
     app=app,
@@ -37,14 +38,9 @@ def create_app():
     app.config["SECRET_KEY"] = getenv("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dbase.db"
     app.config["SESSION_COOKIE_NAME"] = "unique"
-    app.config['SESSION_TYPE'] = "filesystem"
-    app.config['SESSION_PERMANENT'] = False
 
     db.init_app(app)
     migrate.init_app(app,db)
-    _session.init_app(app)
-
-
 
     from .controllers.post import post
     from .controllers.user import user
@@ -54,8 +50,6 @@ def create_app():
 
     from .models.post import Post
     from .models.user import User
-
-    from .utils import get_nickname,generate_session
 
     @app.route("/landigpage")
     def index():

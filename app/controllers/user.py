@@ -22,9 +22,9 @@ def _profile():
 @user.post("/profile/load")
 def load_profile():
     try:
-        code = request.get_json()["identity"]    
+        code = request.get_json()["code"]    
     except KeyError:
-        return jsonify(msg="field identity missing"),400
+        return jsonify(msg="field code missing"),400
         
     user_exist = User.query.filter_by(code=code).first()
     post_exist = Post.query.filter_by(author=code).first()

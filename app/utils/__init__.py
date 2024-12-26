@@ -2,9 +2,13 @@ from flask import session,request,jsonify
 from shortuuid import uuid
 from faker import Faker
 from humanize import naturalday,naturaltime
+from imgurpython import ImgurClient
 from random import randint
 from ..models.user import User
 from .. import app
+
+IMGUR_ID = "ce3c77177b4e01c"
+IMGUR_SECRET = "eb6275603083462c784095668ff4f1e6e5c223ba"
 
 @app.template_filter("getnickname")
 def get_nickname(identity: str):
@@ -23,7 +27,7 @@ def generate_session():
         session.permanent = True
 
     session["ip"] = request.remote_addr
-    print(session)
+
 
 @app.errorhandler(404)
 def not_found_handler(e):
@@ -51,8 +55,30 @@ def posts_to_json(posts,current_user):
             "reply_count": post.reply_count(),
             "like_count": post.like_count(),
             "quote_count": post.quote_count(),
-            "user_like_this": current_user in post.liked_user()
+            "user_like_this": current_user in post.liked_user(),
+	    "image_url": post.image_url
         }
         __posts.append(_)
 
     return __posts
+
+def upload_to_imgur(image):
+    import requests
+    import base64
+    url = "https://api.imgur.com/3/image"
+    headers = {
+        "Authorization": f"Client-ID ce3c77177b4e01c"
+    }
+    
+    data = {
+        "key": IMGUR_SECRET,
+        "image": base64.b64encode(image.read()),
+        "type": "base64",
+        "name": "testing.jpg",
+        "title": "testing.jpg"
+    }
+    # Send the file to Imgur as binary data
+    response = requests.post(url, headers=headers,data=data)
+    print(response)
+    return response.json()['data']['link']
+

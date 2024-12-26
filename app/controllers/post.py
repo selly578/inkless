@@ -1,8 +1,8 @@
 from flask import Blueprint,render_template,request,redirect,url_for,session,jsonify
 from ..models.post import Post,Reaction
 from ..models.user import User
-from ..utils import posts_to_json
-from .. import db  
+from ..utils import posts_to_json,upload_to_imgur
+from .. import db,imgur 
 
 post = Blueprint("post",__name__)
 
@@ -65,7 +65,8 @@ def _post(id):
         "reply_count": post.reply_count(),
         "like_count": post.like_count(),
         "quote_count": post.quote_count(),
-        "user_like_this": user_id in post.liked_user()
+        "user_like_this": user_id in post.liked_user(),
+	"image_url": post.image_url
     }
 
     return jsonify(_)
@@ -83,14 +84,20 @@ def _reply(id):
 
 @post.post("/compose")
 def create_post():
-    content = request.get_json()["content"]
+    content = request.form.get("content")
     author = request.headers.get("user_id")
-    parent_id = request.get_json().get("parent")
-    quoted_id = request.get_json().get("quoted")
+    parent_id = request.form.get("parent")
+    quoted_id = request.form.get("quoted")
+    image = request.files.get("image")
+    image_url = None
+    print(request.form)		
+    if image:
+        print(image)
+        image_url = upload_to_imgur(image)
 
     parent = Post.query.filter_by(id=parent_id).first()
     quoted = Post.query.filter_by(id=quoted_id).first()
-    post = Post(content=content,author=author,parent=parent,quoted=quoted)
+    post = Post(content=content,author=author,parent=parent,quoted=quoted,image_url=image_url)
     db.session.add(post)
     db.session.commit()
 
